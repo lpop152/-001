@@ -4,11 +4,9 @@ import java.io.Serializable;
 
 import org.springframework.data.annotation.Id;
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
+import org.springframework.data.mongodb.core.mapping.Document;
+@Document(collection = "user")
 @Data
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -23,16 +21,6 @@ public class User implements Serializable {
 	 Integer pid;   //父母Id
 	 Integer aid;   //辅导员Id
 	 String aname;   //辅导员姓名
+	 String telephone; //电话
 	 int status; //0 正常，1休学 2服兵役
-	
-	 /**
-	 public String toString() {
-		 return "id:"+id+","+"name:"+name;
-	 }
-	 **/
-	 public static void main(String[] args) {
-		 User u=new User();
-		 System.out.println(u);
-	 }
-
 }
