@@ -1,36 +1,46 @@
 package org.campus.controller;
 
-import java.util.Map;
-
 import org.campus.pojo.User;
 import org.campus.service.IUserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
-	
-	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	IUserService userService;
-	/**
-	 * 
-	 * @param username
-	 * @param pass
-	 * @return
-	 */
-	
-	@RequestMapping("/login")
 
-	public User login(String telephone) {
+	//实现用户登录
+	@PostMapping("/login")
+	public ResponseEntity<Map<String, Object>> login(@RequestParam String telephone, HttpSession session) {
+		Map<String, Object> response = new HashMap<>();
 		User user=userService.login(telephone);
-		log.info(user.toString());
-		return user;
+		if (user != null) {
+			if (user.getRoleType()==1){
+				response.put("status", "success");
+				response.put("role", user.getRoleType());
+			}else if(user.getRoleType()==2){
+				response.put("status", "success");
+				response.put("role", user.getRoleType());
+			}else if(user.getRoleType()==3){
+				response.put("status", "success");
+				response.put("role", user.getRoleType());
+			}else if(user.getRoleType()==4){
+				response.put("status", "success");
+				response.put("role", user.getRoleType());
+			}
+		} else {
+			response.put("status", "error");
+			response.put("message", "用户名不存在");
+		}
+		return ResponseEntity.ok(response); // 确保返回的是 JSON 响应
 	}
 
 }
