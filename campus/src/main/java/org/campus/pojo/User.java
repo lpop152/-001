@@ -23,4 +23,17 @@ public class User implements Serializable {
 	 String aname;   //辅导员姓名
 	 String telephone; //电话
 	 int status; //0 正常，1休学 2服兵役
+	 int isCheckedIn; // 表示是否打卡   -1清空打卡状态，  1已打卡，   0未打卡
+
+
+	 /**
+	 public String toString() {
+		 return "id:"+id+","+"name:"+name;
+	 }
+	 **/
+	 public static void main(String[] args) {
+		 User u=new User();
+		 System.out.println(u);
+	 }
+
 }
