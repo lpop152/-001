@@ -14,7 +14,7 @@ public class User implements Serializable {
 	 private String id;
 	 private String name;
 	 Integer sex;
-	 Integer roleType;  //1.学生  2.父母  3.辅导员，4 领导
+	 Integer roleType;  //1.学生  2.父母  3.辅导员 4.领导
 	 String roleName;
 	 String sno;  //学号
 	 ClassInfo cIno;  //学生班级信息
@@ -22,5 +22,7 @@ public class User implements Serializable {
 	 Integer aid;   //辅导员Id
 	 String aname;   //辅导员姓名
 	 String telephone; //电话
+	 String token; // Token加密
+	 String loginTime; // 登陆时间
 	 int status; //0 正常，1休学 2服兵役
 }

@@ -1,7 +1,5 @@
 package org.campus.service;
 
-import java.util.Map;
-
 import org.campus.dao.IUserDao;
 import org.campus.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ public class UserSevice implements IUserService {
     IUserDao dao;
 	@Override
 	public User login(String telephone) {
-		User user=dao.login(telephone);
-		return user;
+		return dao.login(telephone);
 	}
 }
