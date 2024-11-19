@@ -3,12 +3,17 @@ package org.campus.controller;
 import java.util.Date;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+import org.campus.pojo.CheckIn;
 import org.campus.pojo.User;
 import org.campus.service.CheckInService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
+@Slf4j
 @RequestMapping("/checkIn")
 public class CheckInController {
     @Autowired
@@ -17,13 +22,13 @@ public class CheckInController {
     /**
      * 学生打卡
      *
-     * @param sid
-     * @param time
+     * @param checkIn
      * @return
      */
-    @PostMapping("/checkIn")
-    public boolean checkIn(Integer sid, Date time) {
-        return checkInService.checkIn(sid, time);
+    @PostMapping("/save")
+    public boolean checkIn(@RequestBody CheckIn checkIn) {
+        log.info("学生打卡，sid: {}, time: {}", checkIn.getSid(), checkIn.getTime());
+        return checkInService.checkIn(checkIn);
     }
 
     /**
