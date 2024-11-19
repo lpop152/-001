@@ -1,0 +1,13 @@
+/* pages/login/login.wxss */
+input{
+  border: 1rpx solid black;
+  width: 50vw;
+}
+.whole{
+margin-top: 30vh;
+margin-left: 15vw;
+}
+.button{
+  display: flex;
+  flex-wrap: wrap;
+}

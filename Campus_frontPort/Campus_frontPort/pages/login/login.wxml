@@ -1,0 +1,14 @@
+<view class="whole">
+
+<label style="float: left;margin-bottom: 50rpx;">手机号：</label>
+<input style="float: left;border-radius: 20rpx;padding-left: 20rpx;" model:value="{{telephone}}"/>
+<view style="clear: both;"></view>
+<label style="float: left;margin-bottom: 50rpx;">验证码：</label>
+<input style="float: left;border-radius: 20rpx;padding-left: 20rpx;"model:value="{{verificationCode}}"/>
+<view style="clear: both;"></view>
+</view>
+<view class="button">
+<button type="default" style="margin-bottom: 20rpx;" bind:tap="getVerificationCode">获取验证码</button>
+<button type="primary" bind:tap="login">登录</button>
+</view>
+
