@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Result {
+public class Result<T> {
     private String status; // SUCCESS or FAIL
     private String message; // 返回的信息
+    private T data; // 泛型数据
 }

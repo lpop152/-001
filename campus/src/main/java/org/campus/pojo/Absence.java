@@ -4,6 +4,7 @@ package org.campus.pojo;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Data
 @Document(collection = "Absence")
@@ -11,6 +12,8 @@ public class Absence {
 
 	@Id
 	private String _id;  //这个是自动生成的主键值
+
+	@Field("id")  // 映射 MongoDB 中的 id 字段
 	Integer id;  //这个请假id
 	Integer sid;  //学生id
 	String stuTelephone; //学生电话
