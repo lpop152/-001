@@ -46,4 +46,20 @@ public class UserController {
 		}
 		return ResponseEntity.ok(response); // 确保返回的是 JSON 响应
 	}
+
+	//登陆成功后前端获取生成的token
+	@GetMapping("/getVerificationCode")
+	public ResponseEntity<Map<String, Object>> getVerificationCode(@RequestParam String telephone) {
+		Map<String, Object> response = new HashMap<>();
+		User user=userService.getUserByTelephone(telephone);
+		if (user != null) {
+			response.put("status", "success");
+			response.put("token",user.getToken());
+			System.out.println(user.getToken());
+		} else {
+			response.put("status", "error");
+			response.put("message", "用户名不存在");
+		}
+		return ResponseEntity.ok(response);
+	}
 }

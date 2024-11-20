@@ -1,5 +1,8 @@
 package org.campus.pojo;
 
+import lombok.Data;
+
+@Data
 public class Absence {
 	Integer id;  //这个请假id
 	Integer sid;  //学生id
