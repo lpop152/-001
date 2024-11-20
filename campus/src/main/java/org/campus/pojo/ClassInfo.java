@@ -1,7 +1,17 @@
 package org.campus.pojo;
 
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+@Document(collection = "classInfo")
+@Data
 public class ClassInfo {
+	 @Field("id")
 	 Integer id;
+	 @Id
+	 Integer _id;
 	 int grade;  //级
 	 String major; //专业
 	 String clas;  //班级
