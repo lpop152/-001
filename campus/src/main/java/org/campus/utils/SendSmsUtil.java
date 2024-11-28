@@ -15,7 +15,7 @@ import java.util.Map;
 public class SendSmsUtil {
 
     public static boolean sendCode(String telephone, Map<String, String> param) {
-        DefaultProfile profile = DefaultProfile.getProfile("default", "LTAI5t7iaXAVGueyk8ZW8t23", "XidL6IoQ5tz9sM8sXPzy56thl2tblY");
+        DefaultProfile profile = DefaultProfile.getProfile("default", "", "");
         IAcsClient client = new DefaultAcsClient(profile);
 
         //设置相关固定的参数
@@ -27,9 +27,9 @@ public class SendSmsUtil {
 
         //设置发送相关的参数
         request.putQueryParameter("PhoneNumbers", telephone); //手机号
-        request.putQueryParameter("SignName","河南邺东信息咨询有限公司"); //申请阿里云 签名名称
+        request.putQueryParameter("SignName",""); //申请阿里云 签名名称
         request.putQueryParameter("TemplateCode","\n" +
-                "SMS_475735256"); //申请阿里云 模板code
+                ""); //申请阿里云 模板code
         request.putQueryParameter("TemplateParam", JSONObject.toJSONString(param));//验证码数据，转换json数据传递
 
         try {
