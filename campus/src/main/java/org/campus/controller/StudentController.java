@@ -1,58 +1,67 @@
 package org.campus.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+import java.util.List;
+
+import org.campus.pojo.Result;
 import org.campus.pojo.User;
 import org.campus.service.IUserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/student")
 public class StudentController {
-	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	private IUserService userService;
-	//根据班级ID查找学生并分页
 
-	@GetMapping("/class")
-	public Page<User> getUsersByClassId(
-			@RequestParam("classId") Integer classId,
+	//根据班级ID、初始页码和一页信息数实现动态分页
+	@PostMapping("/class")
+	public Result<Page<User>> getUsersByClassId(
+			@RequestParam("classId") String classId,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size) {
-		logger.debug("Received request for classId: {}, page: {}, size: {}", classId, page, size);
-		return userService.getUsersByClassId(classId, page, size);
+		Page<User> users =userService.getUsersByClassId(classId, page, size);
+		if (users!=null){
+			return new Result<>("SUCCESS", "获取分页成功", users);
+		}else {
+			return new Result<>("FAIL", "获取失败", null);
+		}
 	}
 
-	//根据id查询学生信息
+
+	//根据_id查询学生信息
 	@PostMapping("/getStudentById")
-	public User getUserById(@RequestParam Integer id) {
-		return userService.getUserById(id);
+	public Result<User> getUserById(@RequestParam("id") String _id) {
+		User user=userService.getUserById(_id);
+		if (user!=null){
+			return new Result<>("SUCCESS", "查询成功", user);
+		}else {
+			return new Result<>("FAIL", "查询失败", null);
+		}
 	}
 
 
 	//根据名字查找学生信息
 	@PostMapping("/getStudentsByName")
-	public List<User> getStudentByName(@RequestParam String name){
-		return userService.getStudentByName(name);
+	public Result<List<User>> getStudentByName(@RequestParam("name") String name){
+		List<User> users=userService.getStudentByName(name);
+		if (users!=null){
+			return new Result<>("SUCCESS", "查询成功", users);
+		}else {
+			return new Result<>("FAIL", "查询失败", null);
+		}
 	}
 
 
 	//修改某一个学生状态
 	@PostMapping("/editStatus")
-	public ResponseEntity<Map<String, Object>> editStatus(Integer id, Integer status) {
-		Map<String, Object> response = new HashMap<>();
-		if(userService.editStatus(id,status)) {
-			response.put("status", "success");
+	public Result<String> editStatus(@RequestParam("id") String _id, @RequestParam("status") int status) {
+		if(userService.editStatus(_id,status)) {
+			return new Result<>("SUCCESS", "修改成功", null);
 		}else {
-			response.put("status", "failure");
+			return new Result<>("SUCCESS", "修改失败", null);
 		}
-		return ResponseEntity.ok(response);
 	}
 }
