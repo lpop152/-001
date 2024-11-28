@@ -1,6 +1,5 @@
 package org.campus.dao;
 
-import org.campus.jwt.JWTUtil;
 import org.campus.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,42 +11,21 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
-@Repository("userDao")
+@Repository
 public class UserDao implements IUserDao{
 	@Autowired
     MongoTemplate mongoTemplate;
-	@Autowired
-	private JWTUtil jwtUtil;
 
-	//用户登录并更新token与登陆时间
+	//用户登录
 	@Override
 	public User login(String telephone){
 		Query query = new Query(Criteria.where("telephone").is(telephone));
 		//查询
 		User user=mongoTemplate.findOne(query, User.class);
 		System.out.println(user);
-		// 获取当前时间并转换为字符串
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		String currentTime = now.format(formatter);
-		// 打印当前时间
-		System.out.println("当前时间: " + currentTime);
-		assert user != null;
-		user.setLoginTime(currentTime);
-		//通过用户电话生成一段token
-		String token = jwtUtil.generateToken(user.getTelephone());
-		user.setToken(token);
-
-		System.out.println(user);
-
-		//更新该用户数据
-		mongoTemplate.save(user);
-
 		return user;
 	}
 
@@ -60,13 +38,12 @@ public class UserDao implements IUserDao{
 	}
 
 
-	//通过班级id，一页十个进行分页
+	//通过班级_id，一页十个进行分页
 	@Override
-	public Page<User> findUsersByClassId(Integer classId, int page, int size) {
+	public Page<User> findUsersByClassId(String classId, Pageable pageable) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("cIno.id").is(classId));
+		query.addCriteria(Criteria.where("cIno._id").is(classId));
 
-		Pageable pageable = PageRequest.of(page, size);
 		query.with(pageable);
 
 		List<User> users = mongoTemplate.find(query, User.class);
@@ -76,11 +53,11 @@ public class UserDao implements IUserDao{
 	}
 
 
-	//通过id查询用户
+	//通过_id查询用户
 	@Override
-	public User getUserById(Integer id) {
+	public User getUserById(String _id) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("id").is(id));
+		query.addCriteria(Criteria.where("_id").is(_id));
 		return mongoTemplate.findOne(query, User.class);
 	}
 
@@ -94,11 +71,11 @@ public class UserDao implements IUserDao{
 	}
 
 
-	// 通过id修改status状态
+	// 通过_id修改status状态
 	@Override
-	public boolean editStatus(Integer id, Integer status) {
+	public boolean editStatus(String id, int status) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("id").is(id));
+		query.addCriteria(Criteria.where("_id").is(id));
 		User user = mongoTemplate.findOne(query, User.class);
 
 		if (user == null) {
@@ -112,6 +89,16 @@ public class UserDao implements IUserDao{
 		} catch (Exception e) {
 			return false; // 更新失败
 		}
+	}
+
+
+	//通过电话号码查询mongodb，看其是否存在
+	@Override
+	public boolean isExist(String telephone) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("telephone").is(telephone));
+		User user = mongoTemplate.findOne(query, User.class);
+		return user != null;
 	}
 }
 
